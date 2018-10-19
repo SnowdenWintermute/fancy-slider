@@ -8,12 +8,18 @@ $colors: (
     navLinkCurrent: #f384b3,
     navLinkHover: #eed1dd,
 );
+$iconWidth: 200px;
 
 @function color($color-name){
     @return map-get($colors, $color-name);
 }
 @mixin smallBars {
     @media(max-width: 300px){
+        @content;
+    }
+}
+@mixin mobile {
+    @media(max-width: 840px){
         @content;
     }
 }
@@ -28,10 +34,14 @@ h1{
     font-family: Arial;
     font-size: 50px;
     color: white;
+    @include mobile{
+        font-size: 30px;
+    }
 }
 .slide-container{
     margin: 0 auto;
     width:100%;
+    max-width: 1024px;
     height:400px;
     position: relative;
     overflow: hidden;
@@ -42,26 +52,37 @@ h1{
         top: calc(50% - 40px);
         z-index: 4;
         font-size: 50px;
-        color: white;
+        color:color(navLinkCurrent);
         border: 2px solid color(navBg);
         height: 80px;
         width: 40px;
         background: color(navLinkDropdown);
-        opacity: .3;
+        opacity: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity ease .4s;
+        transition: all ease .4s;
+        @include mobile {
+            height: 80px;
+            width: 25px;
+            font-size: 30px;
+        }
         &:hover{
-            opacity: 1;
+            color: color(navLinkHover);
             cursor: pointer;
         }
     }
     #slider-btn-next{
         right: 2vw;
+        @include mobile {
+            right: 0;
+        }
     }
     #slider-btn-prev{
         left: 2vw;
+        @include mobile {
+            left: 0;
+        }
     }
     // Slides
     .slide-img{
@@ -71,7 +92,7 @@ h1{
         background-position: center;
         background-repeat: no-repeat;
         position: absolute;
-        transition: right ease 2s, opacity ease 1s;
+        transition: right cubic-bezier(.39,.58,.57,1) 5s, opacity ease 1s;
     }
     .slide-offscreen-right{
         opacity: 0;
@@ -86,42 +107,95 @@ h1{
         z-index: 2;
         right:0;
     }
-    .slide-text{
+    .slide-item{
         position: absolute;
         z-index: 3;
     }
     .slide-text-visible{
+        width:100%;
         top:30%;
         left:10%;
-        transition: left ease 3s, opacity ease-out 1s;
+        transition: left ease .8s, opacity ease-out 1s;
+        @include mobile {
+            text-align: center;
+            left:0;
+            top: 30%;
+        }
     }
     .slide-text-fade{
+        width:100%;
         top:30%;
         left:10%;
         opacity: 0;
+        transition: opacity ease .5s;
+        @include mobile {
+            text-align: center;
+            left:0;
+            top: 30%;
+        }
     }
-    .slide-text-offscreen-right{
+    .slide-text-hidden{
+        width:100%;
         top:30%;
         opacity:0;
-        left:30%;
-        transition: left ease 3s, opacity ease-out 2s;
+        left:15%;
+        @include mobile {
+            text-align: center;
+            top: 30%;
+        }
     }
-    #img1{
-        background: url(img/1.jpg);
+    .slide-icon{
+        height: 80px;
+        top: 40%;
+        width:100%;
+        @include mobile{
+        text-align: center;
+        }
+        a{
+            border-radius: 30px;
+            img{
+
+                height: 100%;
+                border-radius: 15px;
+                box-shadow: 0px 5px 15px black;
+                object-position: right;
+                object-fit: contain;
+            }
+        }
     }
-    #img2{
-        background: url(img/2.jpg);
+    .slide-icon-visible{
+        top:45%;
+        left:10%;
+        transition: left ease 1s, opacity ease-out 1s;
+        @include mobile{
+            left:0;
+        }
     }
-    #img3{
-        background: url(img/3.jpg);
+    .slide-icon-fade{
+        top:45%;
+        left:10%;
+        opacity: 0;
+        @include mobile{
+            left: 0; 
+            right: 0; 
+            margin-left: auto; 
+            margin-right: auto; 
+            width: 200px; /* Need a specific value to work */
+        }
     }
-    #img4{
-        background: url(img/4.jpg);
+    .slide-icon-hidden{
+        top:40%;
+        opacity:0;
+        left:18%;
+        @include mobile{
+            left: 30%;
+        }
     }
-    .no-transition{
-        transition: none;
-    }
-    
+    #img1{ background: url(img/1.jpg); }
+    #img2{ background: url(img/2.jpg); }
+    #img3{ background: url(img/3.jpg); }
+    #img4{ background: url(img/4.jpg); }
+    .no-transition{ transition: none; }
 }
 
 
@@ -140,13 +214,21 @@ h1{
     .slide-tab{
         width: 60px;
         height: 15px;
-        background: grey;
-        border: 1px solid black;
+        background: color(navLinkDropdown);
+        border: 1px solid color(navHamburger);
         z-index: 4;
-        opacity: .5;
+        opacity: .8;
         &:hover{
             opacity: 1;
             cursor: pointer;
         }
+    }
+}
+
+.btn-hidden{
+    opacity: 0 !important;
+    transition: opacity .3s;
+    @include mobile{
+        opacity: 1 !important;
     }
 }

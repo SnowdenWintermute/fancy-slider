@@ -6,8 +6,12 @@ let img3 = document.getElementById('img3');
 let txt1 = document.getElementById('txt1');
 let txt2 = document.getElementById('txt2');
 let txt3 = document.getElementById('txt3');
+let icon1 = document.getElementById('icon1');
+let icon2 = document.getElementById('icon2');
+let icon3 = document.getElementById('icon3');
 let slides = [img1, img2, img3];
 let headers = [txt1, txt2, txt3];
+let icons = [icon1, icon2, icon3];
 let nextButton = document.getElementById('slider-btn-next');
 let prevButton = document.getElementById('slider-btn-prev');
 let currentSlideIndex = 2;
@@ -18,7 +22,7 @@ let nextTextIndex = 0;
 
 //set initial slide and create slide tabs
 window.onload = function(){
-    changeSlides("forward", false);
+    changeSlides("forward");
     let myDF = document.createDocumentFragment();
     for(let i=1; i<slides.length+1; i++){
         let slideTab = document.createElement('div');
@@ -34,16 +38,17 @@ window.onload = function(){
 
 function jumpToSlide(index){
     clearInterval(moveSlides);
-    slideOut(slides[currentSlideIndex], false);
+    slideOut(slides[currentSlideIndex]);
+    textOut(headers[currentSlideIndex]);
+    iconOut(icons[currentSlideIndex]);
     currentSlideIndex = index;
+    nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
+    prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
     slideIn(slides[currentSlideIndex], false);
-    nextSlideIndex = index >= slides.length ? 0 : index + 1;
-    prevSlideIndex = index < 0 ? 3 : index - 1;
+    textIn(headers[currentSlideIndex]);
+    iconIn(icons[currentSlideIndex]);
 }
-function slideOut(slide, forced){
-    if(forced){
-        slide.className = "slide-img slide-offscreen-right no-transition" 
-    } else {
+function slideOut(slide){
     slide.className = "slide-img slide-fade";
     console.log("slide faded");
     setTimeout(function(){
@@ -53,38 +58,58 @@ function slideOut(slide, forced){
             console.log("slide out");
             };
         });
-    }, 3000);
+    }, 1000);
     }
-}
-function slideIn(slide, forced){
+function slideIn(slide){
     slide.className = "slide-img slide-visible";
-    if(forced){ slide.className = "slide-img slide-visible no-transition" }
-    console.log("slided in");
 }
 
 function textIn(txt){
-    txt.className = "slide-text slide-text-visible";
+    txt.className = "slide-item slide-text-visible";
 }
 function textOut(txt){
-    txt.className = "slide-text slide-text-fade";
+    txt.className = "slide-item slide-text-fade";
     setTimeout(function(){
-    txt.className = "slide-text slide-text-offscreen-right";
-    }, 3000);
+    headers.forEach(function(h){
+        if(h.className === "slide-item slide-text-fade"){
+            h.className = "slide-item slide-text-hidden";
+            };
+        });
+    }, 1000);
+}
+function iconIn(icon){
+    icon.className = "slide-item slide-icon slide-icon-visible";
+}
+function iconOut(icon){
+    icon.className = "slide-item slide-icon slide-icon-fade";
+    setTimeout(function(){
+    icons.forEach(function(i){
+        if(i.className === "slide-item slide-icon slide-icon-fade"){
+            i.className = "slide-item slide-icon slide-icon-hidden";
+            };
+        });
+    }, 1000);
 }
 let moveSlides = setInterval(function(){
     changeSlides("forward");
 }, slideTimer);
 
-function changeSlides(direction, forced){
-    slideOut(slides[currentSlideIndex], forced);
+function changeSlides(direction){
+    slideOut(slides[currentSlideIndex]);
+    textOut(headers[currentSlideIndex]);
+    iconOut(icons[currentSlideIndex]);
     if(direction === "forward"){
-        slideIn(slides[nextSlideIndex], forced);
+        slideIn(slides[nextSlideIndex]);
+        textIn(headers[nextSlideIndex]);
+        iconIn(icons[nextSlideIndex]);
         currentSlideIndex = nextSlideIndex;
         nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
         prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
     }
     if(direction === "back"){
-        slideIn(slides[prevSlideIndex], forced);
+        slideIn(slides[prevSlideIndex]);
+        textIn(headers[prevSlideIndex]);
+        iconIn(icons[prevSlideIndex]);
         currentSlideIndex = prevSlideIndex;
         nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
         prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
@@ -96,16 +121,18 @@ function changeSlides(direction, forced){
 }
 
 nextButton.addEventListener('click', function(){
-    changeSlides("forward", false);
+    changeSlides("forward");
 });
 prevButton.addEventListener('click', function(){
-    changeSlides("back", false);
+    changeSlides("back");
 });
 
 //hover reveals buttons
 slideContainer.onmouseenter = function(){
-    
+    nextButton.className = "slider-btn slider-btn-next";
+    prevButton.className = "slider-btn slider-btn-prev";
 }
 slideContainer.onmouseleave = function(){
-
+    nextButton.className = "slider-btn slider-btn-next btn-hidden";
+    prevButton.className = "slider-btn slider-btn-prev btn-hidden";
 }
