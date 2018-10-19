@@ -12,6 +12,7 @@ let icon3 = document.getElementById('icon3');
 let slides = [img1, img2, img3];
 let headers = [txt1, txt2, txt3];
 let icons = [icon1, icon2, icon3];
+let tabs = [];
 let nextButton = document.getElementById('slider-btn-next');
 let prevButton = document.getElementById('slider-btn-prev');
 let currentSlideIndex = 2;
@@ -28,9 +29,12 @@ window.onload = function(){
         let slideTab = document.createElement('div');
         slideTab.className = "slide-tab";
         slideTab.id = `slide-tab${i}`;
+        tabs.push(slideTab);
         slideTab.addEventListener('click', function(){
             jumpToSlide(i-1);
         });
+        tabs[0].className = "slide-tab slide-tab-active";
+        console.log(tabs);
         myDF.appendChild(slideTab);
     }
     document.getElementById('slide-tab-holder').appendChild(myDF);
@@ -41,6 +45,7 @@ function jumpToSlide(index){
     slideOut(slides[currentSlideIndex]);
     textOut(headers[currentSlideIndex]);
     iconOut(icons[currentSlideIndex]);
+    tabs[currentSlideIndex].className = "slide-tab slide-tab-active";
     currentSlideIndex = index;
     nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
     prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
@@ -98,6 +103,7 @@ function changeSlides(direction){
     slideOut(slides[currentSlideIndex]);
     textOut(headers[currentSlideIndex]);
     iconOut(icons[currentSlideIndex]);
+    
     if(direction === "forward"){
         slideIn(slides[nextSlideIndex]);
         textIn(headers[nextSlideIndex]);

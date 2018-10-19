@@ -222,6 +222,10 @@ h1{
             opacity: 1;
             cursor: pointer;
         }
+    .slide-tab-active{
+        border: 10px solid blue !important;
+        background-color: color(navHamburger) !important;
+    }
     }
 }
 
