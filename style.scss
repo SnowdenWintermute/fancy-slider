@@ -57,18 +57,21 @@ h1{
         height: 80px;
         width: 40px;
         background: color(navLinkDropdown);
-        opacity: 1;
+        opacity: .7;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: all ease .4s;
+        fill: color(navLinkCurrent);
         @include mobile {
             height: 80px;
             width: 25px;
             font-size: 30px;
         }
         &:hover{
+            fill: color(navLinkHover);
             color: color(navLinkHover);
+            opacity: 1;
             cursor: pointer;
         }
     }
@@ -213,7 +216,7 @@ h1{
     }
     .slide-tab{
         width: 60px;
-        height: 15px;
+        height: 10px;
         background: color(navLinkDropdown);
         border: 1px solid color(navHamburger);
         z-index: 4;

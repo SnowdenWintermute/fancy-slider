@@ -38,7 +38,7 @@ h1 {
   height: 80px;
   width: 40px;
   background: #e2acc2;
-  opacity: 1;
+  opacity: .7;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -50,6 +50,7 @@ h1 {
           align-items: center;
   -webkit-transition: all ease .4s;
   transition: all ease .4s;
+  fill: #f384b3;
 }
 
 @media (max-width: 840px) {
@@ -61,7 +62,9 @@ h1 {
 }
 
 .slide-container .slider-btn:hover {
+  fill: #eed1dd;
   color: #eed1dd;
+  opacity: 1;
   cursor: pointer;
 }
 
@@ -277,7 +280,7 @@ h1 {
 
 #slide-tab-holder .slide-tab {
   width: 60px;
-  height: 15px;
+  height: 10px;
   background: #e2acc2;
   border: 1px solid #d94986;
   z-index: 4;
