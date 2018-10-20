@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>BlizzSlider</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="slider.css">
 </head>
 <body>
     <div class="slide-container" id="slide-container">
@@ -25,16 +24,23 @@
           </div>
         <div class="slide-img slide-offscreen-right" id="img1"></div>
         <div class="slide-item slide-text-hidden" id="txt1"><h1>Vertices</h1></div>
-        <div class="slide-item slide-icon slide-icon-hidden" id="icon1"><a href="#"><img src="./img/youtube.png" alt=""></a></div>
+        <div class="slide-item slide-icon slide-icon-hidden" id="icon1">
+            <a href="https://www.youtube.com" target="_blank">
+            <img src="./img/youtube.png" alt=""></a></div>
         <div class="slide-img slide-offscreen-right" id="img2"></div>
         <div class="slide-item slide-text-hidden" id="txt2"><h1>3D Models</h1></div>
-        <div class="slide-item slide-icon slide-icon-hidden" id="icon2"><a href="#"><img src="./img/twitch.jpg" alt=""></a></div>
+        <div class="slide-item slide-icon slide-icon-hidden" id="icon2">
+            <a href="https://www.twitch.tv" target="_blank">
+            <img src="./img/twitch.jpg" alt=""></a></div>
         <div class="slide-img slide-offscreen-right" id="img3"></div>
         <div class="slide-item slide-text-hidden" id="txt3"><h1>Racing Game</h1></div>
-        <div class="slide-item slide-icon slide-icon-hidden" id="icon3"><a href="#"><img src="./img/instaFull.jpg" alt=""></a></div>
+        <div class="slide-item slide-icon slide-icon-hidden" id="icon3">
+            <a href="https://www.instagram.com"  target="_blank">
+            <img src="./img/instaFull.jpg" alt=""></a></div>
 
         <div id="slide-tab-holder"></div>
     </div>
+    <script src="touchEvents.js"></script>
     <script src="slider.js"></script>
 </body>
 </html>

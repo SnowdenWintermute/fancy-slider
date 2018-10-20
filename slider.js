@@ -19,7 +19,7 @@ let currentSlideIndex = 2;
 let nextSlideIndex = 0;
 let prevSlideIndex = 1;
 
-let nextTextIndex = 0;
+
 
 //set initial slide and create slide tabs
 window.onload = function(){
@@ -27,105 +27,90 @@ window.onload = function(){
     let myDF = document.createDocumentFragment();
     for(let i=1; i<slides.length+1; i++){
         let slideTab = document.createElement('div');
-        slideTab.className = "slide-tab";
+        slideTab.className = "slide-tab"; 
         slideTab.id = `slide-tab${i}`;
         tabs.push(slideTab);
         slideTab.addEventListener('click', function(){
             jumpToSlide(i-1);
         });
-        tabs[0].className = "slide-tab slide-tab-active";
-        console.log(tabs);
+        tabs[0].className = "slide-tab";
         myDF.appendChild(slideTab);
     }
+    tabs[0].className = "slide-tab slide-tab-active"
     document.getElementById('slide-tab-holder').appendChild(myDF);
 }
 
-function jumpToSlide(index){
-    clearInterval(moveSlides);
-    slideOut(slides[currentSlideIndex]);
-    textOut(headers[currentSlideIndex]);
-    iconOut(icons[currentSlideIndex]);
-    tabs[currentSlideIndex].className = "slide-tab slide-tab-active";
-    currentSlideIndex = index;
-    nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
-    prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
-    slideIn(slides[currentSlideIndex], false);
-    textIn(headers[currentSlideIndex]);
-    iconIn(icons[currentSlideIndex]);
-}
-function slideOut(slide){
-    slide.className = "slide-img slide-fade";
-    console.log("slide faded");
-    setTimeout(function(){
-    slides.forEach(function(s){
-        if(s.className === "slide-img slide-fade"){
-            s.className = "slide-img slide-offscreen-right";
-            console.log("slide out");
-            };
-        });
-    }, 1000);
-    }
-function slideIn(slide){
-    slide.className = "slide-img slide-visible";
-}
-
-function textIn(txt){
-    txt.className = "slide-item slide-text-visible";
-}
-function textOut(txt){
-    txt.className = "slide-item slide-text-fade";
-    setTimeout(function(){
-    headers.forEach(function(h){
-        if(h.className === "slide-item slide-text-fade"){
-            h.className = "slide-item slide-text-hidden";
-            };
-        });
-    }, 1000);
-}
-function iconIn(icon){
-    icon.className = "slide-item slide-icon slide-icon-visible";
-}
-function iconOut(icon){
-    icon.className = "slide-item slide-icon slide-icon-fade";
-    setTimeout(function(){
-    icons.forEach(function(i){
-        if(i.className === "slide-item slide-icon slide-icon-fade"){
-            i.className = "slide-item slide-icon slide-icon-hidden";
-            };
-        });
-    }, 1000);
-}
+//start rolling the slides
 let moveSlides = setInterval(function(){
     changeSlides("forward");
 }, slideTimer);
 
+//move elemens of the slides in or out by giving certain classes
+function moveItemOut(item, itemArray, fadeClass, hiddenClass, timeout){
+    item.className = fadeClass;
+    setTimeout(function(){
+    itemArray.forEach(function(i){
+        if(i.className === fadeClass){
+            i.className = hiddenClass;
+            };
+        });
+    }, timeout);
+    }
+function moveItemIn(item, inClass){
+    item.className = inClass;
+}
+
+//change the slides forward or back
 function changeSlides(direction){
-    slideOut(slides[currentSlideIndex]);
-    textOut(headers[currentSlideIndex]);
-    iconOut(icons[currentSlideIndex]);
+    moveItemOut(slides[currentSlideIndex], slides, "slide-img slide-fade", "slide-img slide-offscreen-right", 1000);
+    moveItemOut(headers[currentSlideIndex], headers, "slide-item slide-text-fade", "slide-item slide-text-hidden", 1000);
+    moveItemOut(icons[currentSlideIndex], icons, "slide-item slide-icon slide-icon-fade", "slide-item slide-icon slide-icon-hidden", 1000);
     
     if(direction === "forward"){
-        slideIn(slides[nextSlideIndex]);
-        textIn(headers[nextSlideIndex]);
-        iconIn(icons[nextSlideIndex]);
+        moveItemIn(slides[nextSlideIndex], "slide-img slide-visible");
+        moveItemIn(headers[nextSlideIndex], "slide-item slide-text-visible");
+        moveItemIn(icons[nextSlideIndex], "slide-item slide-icon slide-icon-visible");
         currentSlideIndex = nextSlideIndex;
         nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
         prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
     }
     if(direction === "back"){
-        slideIn(slides[prevSlideIndex]);
-        textIn(headers[prevSlideIndex]);
-        iconIn(icons[prevSlideIndex]);
+        moveItemIn(slides[prevSlideIndex], "slide-img slide-visible");
+        moveItemIn(headers[prevSlideIndex], "slide-item slide-text-visible");
+        moveItemIn(icons[prevSlideIndex], "slide-item slide-icon slide-icon-visible");
         currentSlideIndex = prevSlideIndex;
         nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
         prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
     }
+    tabs.forEach(function(tab){
+        tab.className = "slide-tab";
+    });
+    if(tabs[0]){ tabs[currentSlideIndex].className = "slide-tab slide-tab-active";}
     clearInterval(moveSlides);
     moveSlides = setInterval(function(){
         changeSlides("forward");
     }, slideTimer);
 }
 
+//jump to a specific slide (used for bottom tabs)
+function jumpToSlide(index){
+    clearInterval(moveSlides);
+    moveItemOut(slides[currentSlideIndex], slides, "slide-img slide-fade", "slide-img slide-offscreen-right", 1000);
+    moveItemOut(headers[currentSlideIndex], headers, "slide-item slide-text-fade", "slide-item slide-text-hidden", 1000);
+    moveItemOut(icons[currentSlideIndex], icons, "slide-item slide-icon slide-icon-fade", "slide-item slide-icon slide-icon-hidden", 1000);
+    tabs.forEach(function(tab){
+        tab.className = "slide-tab";
+    });
+    tabs[index].className = "slide-tab slide-tab-active";
+    currentSlideIndex = index;
+    nextSlideIndex = currentSlideIndex + 1 >= slides.length ? 0 : currentSlideIndex + 1;
+    prevSlideIndex = currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1;
+    moveItemIn(slides[currentSlideIndex], "slide-img slide-visible");
+    moveItemIn(headers[currentSlideIndex], "slide-item slide-text-visible");
+    moveItemIn(icons[currentSlideIndex], "slide-item slide-icon slide-icon-visible");
+}
+
+//events for next and prev buttons
 nextButton.addEventListener('click', function(){
     changeSlides("forward");
 });
@@ -142,3 +127,9 @@ slideContainer.onmouseleave = function(){
     nextButton.className = "slider-btn slider-btn-next btn-hidden";
     prevButton.className = "slider-btn slider-btn-prev btn-hidden";
 }
+
+//detect swipes (requires touchevents.js)
+swipedetect(slideContainer, function (direction){
+    if(direction === "right") {changeSlides("forward")};
+    if(direction === "left") {changeSlides("back")};
+});
